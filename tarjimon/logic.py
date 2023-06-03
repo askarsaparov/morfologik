@@ -4,27 +4,34 @@ from mysite.settings import BASE_DIR
 
 
 def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
-
+    import numpy as np
     import pandas as pd
     excel_file_path = os.path.join(BASE_DIR, 'media/excel/base1.xlsx')
     df = pd.read_excel(excel_file_path)
 
+    sum_soz = 0
     Atliq = df.iloc[:, 0].values
-    Feyil = df.iloc[:19676, 1].values
-    Tirkewish = df.iloc[:59, 2].values
-    Modal = df.iloc[:59, 3].values
-    Daneker = df.iloc[:46, 4].values
-    Tanlaq = df.iloc[:65, 5].values
-    Eliklewish = df.iloc[:145, 6].values
-    Almasiq = df.iloc[:49, 7].values
-    Kelbetlik = df.iloc[:7225, 8].values
+    Feyil = df.iloc[:19722, 1].values
+    Tirkewish = df.iloc[:67, 2].values
+    Modal = df.iloc[:60, 3].values
+    Daneker = df.iloc[:49, 4].values
+    Tanlaq = df.iloc[:67, 5].values
+    Eliklewish = df.iloc[:147, 6].values
+    Almasiq = df.iloc[:50, 7].values
+    Kelbetlik = df.iloc[:7259, 8].values
     Sanliq = df.iloc[:7560, 9].values
+    Rawishler = df.iloc[:36, 10].values
 
     def Analiz(text, Text4):  # разбивает слова в текстовом файле на функции
         kesh = ''
         for soz in text:
+            # sum_soz=sum_soz+1
             if Almasiq_f(soz) != None:
                 kesh = soz + ' : ' + Almasiq_f(soz)
+                Text4.append(kesh)
+
+            elif Rawish_f(soz) != None:
+                kesh = soz + ': ' + Rawish_f(soz)
                 Text4.append(kesh)
 
             elif Tirkewish_f(soz) != None:
@@ -43,9 +50,7 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
                 kesh = soz + ' : ' + Eliklewish_f(soz)
                 Text4.append(kesh)
 
-            elif Hareket_f(soz) != None:
-                kesh = soz + ' : ' + Hareket_f(soz)
-                Text4.append(kesh)
+
 
             elif Modal_f(soz) != None:
                 kesh = soz + ' : ' + Modal_f(soz)
@@ -59,12 +64,16 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
                 kesh = soz + ' : ' + fun_atliq(soz)
                 Text4.append(kesh)
 
+            elif Hareket_f(soz) != None:
+                kesh = soz + ' : ' + Hareket_f(soz)
+                Text4.append(kesh)
 
             elif Kelbetlik_f(soz) != None:
                 kesh = soz + ' : ' + Kelbetlik_f(soz)
                 Text4.append(kesh)
             else:
                 kesh = soz + ' : -------'
+                # sum_error=sum_error+1
                 Text4.append(kesh)
 
         return Text4
@@ -78,6 +87,8 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
                     aa = Koplik(a, aa)
                     aa = Tartım(a, aa)
                     aa = Seplik(a, aa)
+                    aa = Ozlik(a, aa)
+                    a = Ozlik1(a)
                     a = Seplik1(a)
                     a = Tartim1(a)
                     a = Koplik1(a)
@@ -87,6 +98,8 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
                 aa = Koplik(a, aa)
                 aa = Tartım(a, aa)
                 aa = Seplik(a, aa)
+                aa = Ozlik(a, aa)
+                a = Ozlik1(a)
                 a = Seplik1(a)
                 a = Tartim1(a)
                 a = Koplik1(a)
@@ -106,6 +119,20 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
         if a[-4:] == 'imiz' or a[-4:] == 'ımız':
             return a[:-4]
         elif a[-3:] == 'miz' or a[-3:] == 'mız':
+            return a[:-3]
+        else:
+            return a
+
+    def Ozlik(a, aa):
+        if a[-3:] == 'siz':
+            return aa + " + (siz) ózlik"
+        elif a[-3:] == 'sań':
+            return aa + " + (sań) ózlik"
+        else:
+            return aa
+
+    def Ozlik1(a):
+        if a[-3:] == 'siz' or a[-3:] == 'sań':
             return a[:-3]
         else:
             return a
@@ -171,6 +198,8 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
             return aa + " + (ta) Orin sepligi"
         elif a[-2:] == 'te':
             return aa + " + (te) Orin sepligi"
+        elif a[-2:] == 'gi':
+            return aa + " + (gi) Orin sepligi"
         elif a[-3:] == 'nda':
             return aa + " + (nda) Orin sepligi"
         elif a[-3:] == 'nde':
@@ -179,20 +208,21 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
             return aa
 
     def Seplik1(a):
-        if a[-2:] == 'ǵa' or a[-2:] == 'ga' or a[-2:] == 'ge' or a[-2:] == 'qa' or a[-2:] == 'ke' or a[
-                                                                                                     -2:] == 'na' or a[
-                                                                                                                     -2:] == 'ne' or a[
-                                                                                                                                     -2:] == 'di' or a[
-                                                                                                                                                     -2:] == 'ti' or a[
-                                                                                                                                                                     -2:] == 'ni' or a[
-                                                                                                                                                                                     -2:] == 'dı' or a[
-                                                                                                                                                                                                     -2:] == 'tı' or a[
-                                                                                                                                                                                                                     -2:] == 'nı' or a[
-                                                                                                                                                                                                                                     -2:] == 'ın' or a[
-                                                                                                                                                                                                                                                     -2:] == 'da' or a[
-                                                                                                                                                                                                                                                                     -2:] == 'de' or a[
-                                                                                                                                                                                                                                                                                     -2:] == 'ta' or a[
-                                                                                                                                                                                                                                                                                                     -2:] == 'te':
+        if a[-2:] == 'ǵa' or a[-2:] == 'ga' or a[-2:] == 'gi' or a[-2:] == 'ge' or a[-2:] == 'qa' or a[
+                                                                                                     -2:] == 'ke' or a[
+                                                                                                                     -2:] == 'na' or a[
+                                                                                                                                     -2:] == 'ne' or a[
+                                                                                                                                                     -2:] == 'di' or a[
+                                                                                                                                                                     -2:] == 'ti' or a[
+                                                                                                                                                                                     -2:] == 'ni' or a[
+                                                                                                                                                                                                     -2:] == 'dı' or a[
+                                                                                                                                                                                                                     -2:] == 'tı' or a[
+                                                                                                                                                                                                                                     -2:] == 'nı' or a[
+                                                                                                                                                                                                                                                     -2:] == 'ın' or a[
+                                                                                                                                                                                                                                                                     -2:] == 'da' or a[
+                                                                                                                                                                                                                                                                                     -2:] == 'de' or a[
+                                                                                                                                                                                                                                                                                                     -2:] == 'ta' or a[
+                                                                                                                                                                                                                                                                                                                     -2:] == 'te':
             return a[:-2]
         elif a[-3:] == 'niń' or a[-3:] == 'diń' or a[-3:] == 'tıń' or a[-3:] == 'nıń' or a[-3:] == 'dıń' or a[
                                                                                                             -3:] == 'tıń' or a[
@@ -209,9 +239,15 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
             return a
 
     def Koplik(a, aa):  # определяет множествонное слово
-        if a[-6:-3] == 'lar' or a[-5:-2] == 'lar' or a[-3:] == 'lar' or a[-9:-6] == 'lar' or a[-10:-7] == 'lar':
+        if a[-6:-3] == 'lar' or a[-5:-2] == 'lar' or a[-3:] == 'lar' or a[-9:-6] == 'lar' or a[-10:-7] == 'lar' or a[
+                                                                                                                   -11:-8] == 'lar' or a[
+                                                                                                                                       -8:-5] == 'lar' or a[
+                                                                                                                                                          -7:-4] == 'lar':
             return aa + " + (lar) ko'plik "
-        elif a[-6:-3] == 'ler' or a[-5:-2] == 'ler' or a[-3] == 'ler' or a[-9:-6] == 'ler' or a[-10:-7] == 'ler':
+        elif a[-6:-3] == 'ler' or a[-5:-2] == 'ler' or a[-3] == 'ler' or a[-9:-6] == 'ler' or a[-10:-7] == 'ler' or a[
+                                                                                                                    -11:-8] == 'ler' or a[
+                                                                                                                                        -8:-5] == 'ler' or a[
+                                                                                                                                                           -7:-4] == 'ler':
             return aa + " + (ler) ko'plik "
         elif a[-4] == 'leri':
             return aa + " + (leri) ko'plik "
@@ -244,10 +280,32 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
                                                                                                                    -4:] == 'ǵi':
                 return "Kelbetlik"
 
+    def Rawish_f(soz):
+        for i in Rawishler:
+            if soz.lower() == i.lower():
+                return "Rawish"
+            if soz[-3:] == 'sha' or soz[-3:] == 'she' or soz[-3:] == 'lay' or soz[-3:] == 'ley':
+                return "Rawish"
+            if np.size(soz) > 4:
+                if soz[-4:] == 'ǵarı' or soz[-4:] == 'geri' or soz[-4:] == 'qarı' or soz[-4:] == 'keri':
+                    return "Rawish"
+
     def Hareket_f(h):  # определяет движение
         for i in Feyil:  # Feyil bazaǵa baylanısıtırw kerek // Kiritildi
             if h.lower() == i.lower():
                 return "Hareket feyil"
+            else:
+                if i[-3:] == 'las' or i[-3:] == 'les' or i[-2:] == 'la' or i[-2:] == 'le' or i[-3:] == 'ǵar' or i[
+                                                                                                                -3:] == 'ger' or i[
+                                                                                                                                 -3:] == 'ker' or i[
+                                                                                                                                                  -3:] == 'qar' or i[
+                                                                                                                                                                   -3:] == 'sın' or i[
+                                                                                                                                                                                    -3:] == 'sin' or i[
+                                                                                                                                                                                                     -4:] == 'sıra' or i[
+                                                                                                                                                                                                                       -4:] == 'sire' or i[
+                                                                                                                                                                                                                                         -4:] == 'ılda' or i[
+                                                                                                                                                                                                                                                           -4:] == 'ilde':
+                    return "Hareket feyili"
 
     def Tirkewish_f(h):
         for i in Tirkewish:
@@ -322,18 +380,31 @@ def read_file(Text_file):  # Fayldıń shaqırılǵan jeri
     Text1 = Text_file.split('.')
     Text3 = []
     Text4 = []
-    Text5 = ''
+    # Text5=''
 
     for gap in Text1:
         Text3 = []
         Text2 = gap.split(' ')
 
         for i in Text2:
+            i = i.rstrip()  # '\n' belgisinen tazlaw ushin
+            i = i.lstrip()
             if i != '':
-                if i[-1] == ',' or i[-1] == '?' or i[-1] == '!':
+                if i[-1] == ',' or i[-1] == '?' or i[-1] == '!' or i[-1] == '»':
                     Text3.append(i[:-1])
+                elif i[0] == '«':
+                    Text3.append(i[1:])
                 else:
                     Text3.append(i)
+        sum_soz = sum_soz + np.size(Text3)
 
         Text4 = Analiz(Text3, Text4)
+    # new_file=open("out_file.txt",'w',encoding='utf-8')
+    # Text5=''
+    # for i in Text4:
+    # new_file.write(i)#taza faylga jazip atir
+    # new_file.write('\n')
+    # Text5=Text5 + i +'\n'
+    # new_file.close()
+    # print (sum_soz)
     return Text4  # kazirshe returnga qaaytarip qoyipban
